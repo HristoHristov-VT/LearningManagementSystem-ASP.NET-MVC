@@ -1,0 +1,142 @@
+﻿
+@{
+    ViewBag.Title = "Курсове";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="container">
+    <h2>Курсове</h2>
+    <a class="btn btn-success " style="margin-bottom: 10px" onclick="PopupFormCource('@Url.Action("AddOrEditCource", "Cource")')" href="#"><i class="fa fa-plus"></i> Добави</a>
+    <table id="cource" class="table table-striped table-bordered table-inverse table-responsive ">
+        <thead>
+            <tr>
+                <th>№</th>
+                <th>Тема на курса</th>
+                <th>Описание</th>
+                <th></th>
+
+
+            </tr>
+
+        </thead>
+    </table>
+</div>
+
+<link href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+
+@section scripts{
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $("#cource").DataTable({
+                "ajax": {
+                    "url": "/Cource/GetDataCource",
+                    "type": "GET",
+                    "datatype": "json"
+                },
+                "columns": [
+                    { "data": "ID" },
+                    { "data": "Name" },
+                    { "data": "Description" },
+                    {
+                        "data": "ID", "render": function (data) {
+                            return "<a class='btn btn-success btn-block' onclick=PopupFormCource('@Url.Action("AddOrEditCource", "Cource")/" + data + "')><i class='fa fa-pencil'></i> Редактирай</a><a class='btn btn-warning btn-block' onclick=DeleteCource("+data+")><i class='fa fa-trash'></i> Изтрий</a>";
+                    },
+                        "orderable": false,
+                        "searchable":false,
+                        "width":"150px"
+                    }
+
+
+                ],
+                "language": {
+
+                    "emptyTable": "Не са налични данни, използвайте <b>Добави</b> бутона"
+                }
+
+
+
+            });
+
+
+
+
+        });
+
+
+        function PopupFormCource(url) {
+            var formDiv = $('<div/>');
+                $.get(url)
+                .done(function (response) {
+                    formDiv.html(response);
+
+                    Popup = formDiv.dialog({
+                        autoOpen: true,
+                        resizable: false,
+                        title: 'Fill Area Details',
+                        height: 500,
+                        width: 700,
+                        close: function () {
+                            Popup.dialog('destroy').remove();
+                        }
+                    });
+
+                });
+        }
+
+        function SubmitFormCource(form) {
+            $.validator.unobtrusive.parse(form);
+            if ($(form).valid()) {
+                $.ajax({
+                    type: "POST",
+                    url: form.action(),
+                    data: $(form).serialize(),
+                    success: function (data) {
+                        if (data.success)
+                        {
+                            Popup.dialog('close');
+                            dataTable.ajax.reloade();
+
+                            $.notify(data.message, {
+                                globalPosition: "top center",
+                                className: "success"
+                            })
+                        }
+                    }
+                });
+            }
+            return false;
+        }
+
+        function DeleteCource(id) {
+            if(confirm('Сигурни ли сте, че искате да изтриете записа ?'))
+            {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("DeleteArea", "Area")/' + id,
+                    success: function (data) {
+                        if (data.success)
+                        {
+                            dataTable.ajax.reload();
+
+                            $.notify(data.message, {
+                                globalPosition: "top center",
+                                className: "success"
+                            })
+
+                        }
+                    }
+
+                });
+            }
+        }
+    </script>
+
+}

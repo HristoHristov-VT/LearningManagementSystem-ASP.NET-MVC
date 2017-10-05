@@ -1,0 +1,78 @@
+﻿@model LearningManagementSystem.Models.Student
+@{
+    Layout = null;
+}
+
+@using (Html.BeginForm("AddOrEdit", "Students", FormMethod.Post))
+{
+    @Html.HiddenFor(model => model.ID )
+    <div class="form-group">
+        @Html.LabelFor(model =>model.FirstName, new {@class="control-label"})
+        @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+        @*@Html.ValidationMessageFor(model => model.FirstName)*@
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.LastName, new { @class = "control-label" })
+        @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+        @*@Html.ValidationMessageFor(model => model.LastName)*@
+
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Gender, new { @class = "control-label" })
+        @Html.EditorFor(model => model.Gender, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.DateOfBirth, new { @class = "control-label" })
+        @Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Created, new { @class = "control-label" })
+        @Html.EditorFor(model => model.Created, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.City, new { @class = "control-label" })
+        @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Adress, new { @class = "control-label" })
+        @Html.EditorFor(model => model.Adress, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Email, new { @class = "control-label" })
+        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Website, new { @class = "control-label" })
+        @Html.EditorFor(model => model.Website, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Phone, new { @class = "control-label" })
+        @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Status, new { @class = "control-label" })
+        @Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Rude, new { @class = "control-label" })
+        @Html.EditorFor(model => model.Rude, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Observation, new { @class = "control-label" })
+        @Html.EditorFor(model => model.Observation, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+
+    <div class="form-group">
+       <input type="submit" value="Запиши" class="btn btn-primary" />
+       <input type="reset" value="Изчисти" class="btn" />
+
+    </div>
+
+}
+
+
+
+
+
+
+

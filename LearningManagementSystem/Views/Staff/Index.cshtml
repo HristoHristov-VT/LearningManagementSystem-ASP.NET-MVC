@@ -1,0 +1,164 @@
+﻿
+@{
+    ViewBag.Title = "Staff";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container-fluid">
+    <h2>Преподаватели</h2>
+    <a class="btn btn-success " style="margin-bottom: 10px" onclick="PopupFormStaff('@Url.Action("AddOrEditStaff", "Staff")')" href="#"><i class="fa fa-plus"></i> Добави</a>
+    <table id="staff" class="table table-striped table-bordered table-inverse table-responsive ">
+        <thead>
+            <tr>
+                <th>№</th>
+                <th>Име</th>
+                <th>Фамилия</th>
+                <th>пол</th>               
+                <th>Дата на регистрация</th>
+                <th>Град</th>
+                <th>Адрес</th>
+                <th>Email</th>
+                <th>Web</th>
+                <th>Телефон</th>
+                <th>Статус</th>
+                <th>Категория</th>
+                <th>Дата на назначаване</th>
+                <th>Заплата</th>
+                <th>степен</th>
+                <th></th>
+
+            </tr>
+
+        </thead>
+    </table>
+</div>
+
+<link href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+
+@section scripts{
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $("#staff").DataTable({
+                "ajax": {
+                    "url": "/Staff/GetDataStaff",
+                    "type": "GET",
+                    "datatype": "json"
+                },
+                "columns": [
+                    { "data": "ID" },
+                    { "data": "FirstName" },
+                    { "data": "LastName" },
+                    { "data": "Gender" },                   
+                    { "data": "Created" },
+                    { "data": "City" },
+                    { "data": "Adress" },
+                    { "data": "Email" },
+                    { "data": "Website" },
+                    { "data": "Phone" },
+                    { "data": "Status" },
+                    { "data": "Category" },
+                    { "data": "DateOfHiring" },
+                    { "data": "Salary" },
+                    { "data": "IDStaffType" },
+                    {
+                        "data": "ID", "render": function (data) {
+                            return "<a class='btn btn-success btn-block' onclick=PopupFormStaff('@Url.Action("AddOrEditStaff", "Staff")/" + data + "')><i class='fa fa-pencil'></i> Редактирай</a><a class='btn btn-warning btn-block' onclick=DeleteStaff("+data+")><i class='fa fa-trash'></i> Изтрий</a>";
+                    },
+                        "orderable": false,
+                        "searchable":false,
+                        "width":"150px"
+                    }
+
+
+                ],
+                "language": {
+
+                    "emptyTable" : "No data found, Please click on <b>Add New</b> Button"
+                }
+
+
+
+            });
+
+
+
+
+        });
+
+
+        function PopupFormStaff(url) {
+            var formDiv = $('<div/>');
+                $.get(url)
+                .done(function (response) {
+                    formDiv.html(response);
+
+                    Popup = formDiv.dialog({
+                        autoOpen: true,
+                        resizable: false,
+                        title: 'Fill Students Details',
+                        height: 500,
+                        width: 700,
+                        close: function () {
+                            Popup.dialog('destroy').remove();
+                        }
+                    });
+
+                });
+        }
+
+        function SubmitFormStaff(form) {
+            $.validator.unobtrusive.parse(form);
+            if ($(form).valid()) {
+                $.ajax({
+                    type: "POST",
+                    url: form.action(),
+                    data: $(form).serialize(),
+                    success: function (data) {
+                        if (data.success)
+                        {
+                            Popup.dialog('close');
+                            dataTable.ajax.reloade();
+
+                            $.notify(data.message, {
+                                globalPosition: "top center",
+                                className: "success"
+                            })
+                        }
+                    }
+                });
+            }
+            return false;
+        }
+
+        function DeleteStaff(id) {
+            if(confirm('Сигурни ли сте, че искате да изтриете записа ?'))
+            {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("DeleteStaff", "Staff")/' + id,
+                    success: function (data) {
+                        if (data.success)
+                        {
+                            dataTable.ajax.reload();
+
+                            $.notify(data.message, {
+                                globalPosition: "top center",
+                                className: "success"
+                            })
+
+                        }
+                    }
+
+                });
+            }
+        }
+    </script>
+
+}

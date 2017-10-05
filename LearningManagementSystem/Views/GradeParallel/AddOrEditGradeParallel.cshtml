@@ -1,0 +1,38 @@
+﻿@model LearningManagementSystem.Models.GradeParallel
+@{
+    Layout = null;
+}
+
+@using (Html.BeginForm("AddOrEditGradeParallel", "GradeParallel", FormMethod.Post))
+{
+    @Html.HiddenFor(model => model.ID)
+    <div class="form-group">
+        @Html.LabelFor(model => model.Name, new { @class = "control-label" })
+        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+        @*@Html.ValidationMessageFor(model => model.FirstName)*@
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.IDGrade.Name, new { @class = "control-label" })
+        @Html.EditorFor(model => model.IDGrade.Name, new { htmlAttributes = new { @class = "form-control" } })
+        @*@Html.ValidationMessageFor(model => model.LastName)*@
+
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.IDStaff.FirstName, new { @class = "control-label" })
+        @Html.EditorFor(model => model.IDStaff.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+    
+    <div class="form-group">
+        <input type="submit" value="Запиши" class="btn btn-primary" />
+        <input type="reset" value="Изчисти" class="btn" />
+
+    </div>
+
+}
+
+
+
+
+
+
+
