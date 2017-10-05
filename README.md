@@ -1,4 +1,4 @@
-<h1>LearningManagementSystem-ASP.NET-MVC</h1>
+<h1>Learning Management System</h1>
 <p>ASP.NET MVC project<p/>
 <p>Entity framework Code First<p/>
 
